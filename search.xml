@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[Oracle 建立分区]]></title>
+    <url>%2Fposts%2F56017bc5.html</url>
+    <content type="text"><![CDATA[Oracle建立分区分为有分区maxValue和无maxValue的两种情况`sh#无maxValue的情况，直接执行下面的sql（按月分区），要建几个就根据不同需求建几个就行（TO_DATE里面放的东西，根据自己的需求放）`shalter table table_name add partition areaName(分区名字) VALUES LESS THAN(TO_DATE(‘2019-10-01 00:00:00’, ‘SYYYY-MM-DD HH24:MI:SS’, ‘NLS_CALENDAR=GREGORIAN’)) TABLESPACE USERS ;#有maxValue的情况下，如果直接建的话会报错，所以用下面的sql`shalter table table_name split partition areaNamemax（当前分区的最大值） at(TO_DATE(‘2019-12-01 00:00:00’,（要建的分区对应的时间） ‘SYYYY-MM-DD HH24:MI:SS’,‘NLS_CALENDAR=GREGORIAN’)) into (partition areaName（新建分区的名字） , partition areaNamemax（当前分区的最大值）);删除一个分区`shalter table CTSENDLOG drop partition areaName（分区名字）#查看自己建的分区`shselect table_name,partition_name,high_value from user_tab_partitions o where table_name=’table_name’#什么是当前分区的最大值，就是你查询出当前所有的分区（按月份分区得话），就是最后一个分区的名字，对应放上去就行了]]></content>
+      <categories>
+        <category>oracle</category>
+      </categories>
+      <tags>
+        <tag>oracle</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[zookeeper 命令使用]]></title>
     <url>%2Fposts%2F56017bc5.html</url>
     <content type="text"><![CDATA[zkCli.sh123# 指定ip和端口，zkCli.sh默认进入的是2181端口# sh zkCli.sh -server localhsot:2170sh zkCli.sh -server ip:portzkServer.sh1234# 启动sh zkServer.sh start# 查看状态sh zkServersh status]]></content>
