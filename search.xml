@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[Oracle查大表新建临时表查询法]]></title>
+    <url>%2Fposts%2F56017bc5.html</url>
+    <content type="text"><![CDATA[123456789# 第一步，根据要查的字段把数据放到一个临时表CREATE TABLE TMP_PAY_LXP_2019 AS SELECT FUNC_NAME, METH_NAME, INVOKE_TIME FROM EM_T_INVOKE_FUNC_LOG F（临时表） WHERE F.FUNC_NAME = 'pay'（查询条件一） AND F.METH_NAME = 'recharge'（查询条件二） AND F.INVOKE_TIME BETWEEN TO_DATE('2019-01-01 00:00:00','yyyy-mm-dd hh24:mi:ss') AND TO_DATE('2019-01-31 23:59:59','yyyy-mm-dd hh24:mi:ss');（查询时间，可以自己设置查询时间1-2,1-n月,2-n月等等）123456789# -- 再去查询临时表，获取数据SELECT TO_CHAR(INVOKE_TIME, 'yyyymmdd'), F.FUNC_NAME 功能名称, F.METH_NAME 方法入口, COUNT(*) FROM TMP_PAY_LXP_2019 F GROUP BY TO_CHAR(INVOKE_TIME, 'yyyymmdd'),（时间查询可以自己设定是具体到天还是月如yyyymm） F.FUNC_NAME, F.METH_NAME ORDER BY TO_CHAR(F.INVOKE_TIME, 'yyyymmdd') DESC;– 用完数据后，清空临时表数据，并删除临时表– 清空数据1TRUNCATE TABLE TMP_PAY_LXP_2019;– 删除表1DROP TABLE TMP_PAY_LXP_2019 PURGE;]]></content>
+      <categories>
+        <category>oracle</category>
+      </categories>
+      <tags>
+        <tag>oracle</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[Oracle 建立分区]]></title>
     <url>%2Fposts%2F56017bc5.html</url>
     <content type="text"><![CDATA[Oracle建立分区分为有分区maxValue和无maxValue的两种情况123# 无maxValue的情况，直接执行下面的sql（按月分区），要建几个就根据不同需求建几个就行（TO_DATE里面放的东西，根据自己的需求放）alter table table_name add partition areaName(分区名字) VALUES LESS THAN (TO_DATE('2019-10-01 00:00:00', 'SYYYY-MM-DD HH24:MI:SS', 'NLS_CALENDAR=GREGORIAN')) TABLESPACE USERS ;123# 有maxValue的情况下，如果直接建的话会报错，所以用下面的sqlalter table table_name split partition areaNamemax（当前分区的最大值） at(TO_DATE('2019-12-01 00:00:00',（要建的分区对应的时间） 'SYYYY-MM-DD HH24:MI:SS', 'NLS_CALENDAR=GREGORIAN')) into (partition areaName（新建分区的名字） , partition areaNamemax（当前分区的最大值）);删除一个分区1alter table table_name drop partition areaName（分区名字）查看自己建的分区1select table_name,partition_name,high_value from user_tab_partitions o where table_name='table_name'什么是当前分区的最大值，就是你查询出当前所有的分区（按月份分区得话），就是最后一个分区的名字，对应放上去就行了]]></content>
@@ -10,6 +21,11 @@
       <tags>
         <tag>oracle</tag>
       </tags>
+  </entry>
+  <entry>
+    <title></title>
+    <url>%2Fposts%2F0.html</url>
+    <content type="text"></content>
   </entry>
   <entry>
     <title><![CDATA[zookeeper 命令使用]]></title>
